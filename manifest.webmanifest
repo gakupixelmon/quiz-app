@@ -1,0 +1,16 @@
+{
+  "name": "はやおし文庫",
+  "short_name": "はやおし文庫",
+  "description": "身内で楽しむ、みんはや風の早押しクイズ",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0c1320",
+  "theme_color": "#101827",
+  "lang": "ja",
+  "icons": [{
+    "src": "icon.svg",
+    "sizes": "any",
+    "type": "image/svg+xml",
+    "purpose": "any maskable"
+  }]
+}

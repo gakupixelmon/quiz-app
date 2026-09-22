@@ -1,0 +1,10 @@
+{
+  "name": "hayaooshi-bunko",
+  "private": true,
+  "version": "1.0.0",
+  "description": "身内で楽しむ、みんはや風の早押しクイズPWA",
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "dev": "python3 -m http.server 4173"
+  }
+}
