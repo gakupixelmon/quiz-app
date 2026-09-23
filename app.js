@@ -28,97 +28,98 @@ const DEFAULT_QUESTIONS = [
   {
     id: 'jomon-001', categoryId: 'jomon',
     prompt: '北海道・北東北の縄文遺跡群は、北海道、青森県、岩手県、そしてもう一つどの県にまたがる遺跡群でしょう？',
-    answer: '秋田県', acceptedAnswers: ['秋田', '秋田県'],
+    answer: '秋田県', answerHiragana: 'あきたけん', acceptedAnswers: ['秋田', '秋田県'], acceptedAnswersHiragana: ['あきた'],
     explanation: '構成資産は北海道・青森県・岩手県・秋田県の17遺跡です。', source: '文化庁 世界遺産オンライン',
   },
   {
     id: 'jomon-002', categoryId: 'jomon',
     prompt: '北海道・北東北の縄文遺跡群が、世界文化遺産に登録されたのは西暦何年でしょう？',
-    answer: '2021年', acceptedAnswers: ['2021', '2021年'],
+    answer: '2021年', answerHiragana: 'にせんにじゅういちねん', acceptedAnswers: ['2021', '2021年'], acceptedAnswersHiragana: ['にせんにじゅういち'],
     explanation: '2021年7月、ユネスコ世界遺産委員会で登録されました。', source: '文化庁 世界遺産オンライン',
   },
   {
     id: 'jomon-003', categoryId: 'jomon',
     prompt: '青森県にある、国内最大級の縄文集落跡として知られる三内丸山遺跡は、何時代の遺跡でしょう？',
-    answer: '縄文時代', acceptedAnswers: ['縄文', '縄文時代'],
+    answer: '縄文時代', answerHiragana: 'じょうもんじだい', acceptedAnswers: ['縄文', '縄文時代'], acceptedAnswersHiragana: ['じょうもん'],
     explanation: '三内丸山遺跡は、約5900〜4200年前の縄文時代の大規模集落跡です。', source: '青森県 三内丸山遺跡センター',
   },
   {
     id: 'jomon-004', categoryId: 'jomon',
     prompt: '三内丸山遺跡で発見された、6本の柱の跡から復元された大型の建物を何と呼ぶでしょう？',
-    answer: '大型掘立柱建物', acceptedAnswers: ['大型掘立柱建物', '大型掘立柱建物跡'],
+    answer: '大型掘立柱建物', answerHiragana: 'おおがたほったてばしらたてもの', acceptedAnswers: ['大型掘立柱建物', '大型掘立柱建物跡'], acceptedAnswersHiragana: ['おおがたほったてばしらたてものあと'],
     explanation: '直径約1メートルの柱を使った、長さ約32メートルの建物です。', source: '青森県 三内丸山遺跡センター',
   },
   {
     id: 'jomon-005', categoryId: 'jomon',
     prompt: '青森県の大湯環状列石を構成する二つの環状列石のうち、万座遺跡ともう一つは何遺跡でしょう？',
-    answer: '野中堂遺跡', acceptedAnswers: ['野中堂', '野中堂遺跡'],
+    answer: '野中堂遺跡', answerHiragana: 'のなかどういせき', acceptedAnswers: ['野中堂', '野中堂遺跡'], acceptedAnswersHiragana: ['のなかどう'],
     explanation: '大湯環状列石は、万座環状列石と野中堂環状列石からなります。', source: '鹿角市 大湯環状列石',
   },
   {
     id: 'jomon-006', categoryId: 'jomon',
     prompt: '岩手県の御所野遺跡で見つかった、地面を掘りくぼめて建てる縄文時代の住居を何というでしょう？',
-    answer: '竪穴建物', acceptedAnswers: ['竪穴建物', '竪穴住居'],
+    answer: '竪穴建物', answerHiragana: 'たてあなたてもの', acceptedAnswers: ['竪穴建物', '竪穴住居'], acceptedAnswersHiragana: ['たてあなじゅうきょ'],
     explanation: '御所野遺跡では、焼失した竪穴建物の跡が良好な状態で残っています。', source: '一戸町 御所野縄文博物館',
   },
   {
     id: 'jomon-007', categoryId: 'jomon',
     prompt: '北海道の垣ノ島遺跡で見つかった、足の形が押しつけられた土製品を何と呼ぶでしょう？',
-    answer: '足形付土版', acceptedAnswers: ['足形付土版', '足形土版'],
+    answer: '足形付土版', answerHiragana: 'あしがたつきどばん', acceptedAnswers: ['足形付土版', '足形土版'], acceptedAnswersHiragana: ['あしがたどばん'],
     explanation: '子どもの足形をつけたと考えられる土版で、当時の習俗を伝えます。', source: '函館市教育委員会',
   },
   {
     id: 'jomon-008', categoryId: 'jomon',
     prompt: '北海道のキウス周堤墓群に見られる、土を円形に盛り上げて墓域を囲んだ遺構を何というでしょう？',
-    answer: '周堤墓', acceptedAnswers: ['周堤墓', 'しゅうていぼ'],
+    answer: '周堤墓', answerHiragana: 'しゅうていぼ', acceptedAnswers: ['周堤墓', 'しゅうていぼ'],
     explanation: '大規模な土木工事によってつくられた、縄文時代後期の集団墓です。', source: '千歳市 キウス周堤墓群',
   },
   {
     id: 'jomon-009', categoryId: 'jomon',
     prompt: '青森県の大平山元I遺跡から出土した、約1万6500年前のものとされる遺物は何でしょう？',
-    answer: '土器', acceptedAnswers: ['土器', '無文土器'],
+    answer: '土器', answerHiragana: 'どき', acceptedAnswers: ['土器', '無文土器'], acceptedAnswersHiragana: ['むもんどき'],
     explanation: '出土した土器片は、土器の使用開始時期を考える重要な資料です。', source: '外ヶ浜町 大平山元I遺跡',
   },
   {
     id: 'jomon-010', categoryId: 'jomon',
     prompt: '青森県の亀ヶ岡石器時代遺跡から出土した、目の部分が特徴的な土偶を何と呼ぶでしょう？',
-    answer: '遮光器土偶', acceptedAnswers: ['遮光器土偶', 'しゃこうきどぐう'],
+    answer: '遮光器土偶', answerHiragana: 'しゃこうきどぐう', acceptedAnswers: ['遮光器土偶', 'しゃこうきどぐう'],
     explanation: '大きく表現された目が、遮光器に似ていることから名づけられました。', source: 'つがる市教育委員会',
   },
   {
     id: 'jomon-011', categoryId: 'jomon',
     prompt: '北海道・北東北の縄文遺跡群を構成する世界遺産の構成資産は、全部で何遺跡でしょう？',
-    answer: '17遺跡', acceptedAnswers: ['17', '17遺跡', '十七遺跡'],
+    answer: '17遺跡', answerHiragana: 'じゅうなないせき', acceptedAnswers: ['17', '17遺跡', '十七遺跡'], acceptedAnswersHiragana: ['じゅうなな'],
     explanation: '北海道・北東北4道県に所在する17遺跡で構成されています。', source: '文化庁 世界遺産オンライン',
   },
   {
     id: 'jomon-012', categoryId: 'jomon',
     prompt: '北海道・北東北の縄文遺跡群が示す、狩猟・採集・漁労を基盤とした文化は、一般に何文化と呼ばれるでしょう？',
-    answer: '縄文文化', acceptedAnswers: ['縄文', '縄文文化'],
+    answer: '縄文文化', answerHiragana: 'じょうもんぶんか', acceptedAnswers: ['縄文', '縄文文化'], acceptedAnswersHiragana: ['じょうもん'],
     explanation: '定住しながら自然資源を持続的に利用した文化の姿を伝えています。', source: '文化庁 世界遺産オンライン',
   },
   {
     id: 'jomon-013', categoryId: 'jomon',
     prompt: '秋田県の伊勢堂岱遺跡で確認されている、石を環状に配置した遺構は全部でいくつでしょう？',
-    answer: '4つ', acceptedAnswers: ['4', '4つ', '四つ'],
+    answer: '4つ', answerHiragana: 'よっつ', acceptedAnswers: ['4', '4つ', '四つ'], acceptedAnswersHiragana: ['よん'],
     explanation: '伊勢堂岱遺跡では、国内で唯一、4つの環状列石が同じ場所で確認されています。', source: '北秋田市 伊勢堂岱縄文館',
   },
   {
     id: 'jomon-014', categoryId: 'jomon',
     prompt: '北海道の北黄金貝塚などに見られる、貝殻や動物の骨などが堆積した遺構を何というでしょう？',
-    answer: '貝塚', acceptedAnswers: ['貝塚', 'かいづか'],
+    answer: '貝塚', answerHiragana: 'かいづか', acceptedAnswers: ['貝塚', 'かいづか'],
     explanation: '貝塚は、当時の食生活や自然環境を知ることができる重要な遺跡です。', source: '伊達市 北黄金貝塚情報センター',
   },
   {
     id: 'jomon-015', categoryId: 'jomon',
     prompt: '縄文時代の人々が、土器や木製品などに塗っていたことでも知られる天然の樹液は何でしょう？',
-    answer: '漆', acceptedAnswers: ['漆', 'うるし'],
+    answer: '漆', answerHiragana: 'うるし', acceptedAnswers: ['漆', 'うるし'],
     explanation: '北海道・北東北の遺跡からは、漆を使った装飾品や容器が見つかっています。', source: '文化庁 世界遺産オンライン',
   },
 ];
 
 const STORAGE_KEY = 'hayaooshi-custom-questions-v1';
 const NAME_KEY = 'hayaooshi-player-name-v1';
+const PREPARE_DELAY_MS = 1200;
 const app = document.querySelector('#app');
 const modalRoot = document.querySelector('#modalRoot');
 const connectionText = document.querySelector('#connectionText');
@@ -130,6 +131,7 @@ let view = 'home';
 let expanded = new Set(['world-heritage', 'japan']);
 let game = null;
 let revealTimer = null;
+let prepareTimer = null;
 let toastTimer = null;
 let session = null;
 
@@ -152,8 +154,13 @@ function isValidQuestion(question) {
     question && typeof question.id === 'string' && typeof question.categoryId === 'string' &&
     typeof question.prompt === 'string' && question.prompt.trim() &&
     typeof question.answer === 'string' && question.answer.trim() &&
+    isHiragana(question.answerHiragana || (isHiragana(question.answer) ? question.answer : '')) &&
     getCategory(question.categoryId),
   );
+}
+
+function isHiragana(value) {
+  return /^[ぁ-ゖー]+$/u.test(String(value || '').trim());
 }
 
 function getCategory(id, nodes = CATEGORY_TREE) {
@@ -374,7 +381,7 @@ function renderGame() {
         <div class="quiz-meta"><span>ROUND ${String(game.round || 1).padStart(2, '0')}</span><span class="live-badge"><i></i><span id="questionStatus">${escapeHtml(statusLabel())}</span></span></div>
         <div class="question-area">
           <span class="question-label">QUESTION / ${game.mode === 'online' ? 'LIVE MATCH' : 'PRACTICE'}</span>
-          <div class="question-text" id="questionText">${renderQuestionText()}<span class="cursor"></span></div>
+          <div class="question-text" id="questionText">${renderQuestionText()}${game.status === 'preparing' ? '' : '<span class="cursor"></span>'}</div>
           <p class="question-source" id="questionSource">出典：${escapeHtml(game.current.source || '登録なし')}</p>
         </div>
         <div class="quiz-actions">
@@ -392,6 +399,7 @@ function renderGame() {
 }
 
 function renderQuestionText() {
+  if (game.status === 'preparing') return `<span class="question-intro">第${String(game.round || 1).padStart(2, '0')}問</span>`;
   return escapeHtml((game.current.prompt || '').slice(0, game.revealed || 0));
 }
 
@@ -407,7 +415,7 @@ function renderRoundList() {
 function renderAnswerPanel(isWinner, isHost) {
   if (game.status === 'answering' || game.status === 'checking') {
     if (isWinner) {
-      return `<form class="answer-form" id="answerForm"><input class="text-input" id="answerInput" autocomplete="off" placeholder="答えを入力" ${game.status === 'checking' ? 'disabled' : ''} /><button class="primary-button" type="submit" ${game.status === 'checking' ? 'disabled' : ''}>回答</button></form><span class="hint">Enterでも送信できます</span>`;
+      return `<form class="answer-form" id="answerForm"><input class="text-input" id="answerInput" autocomplete="off" inputmode="hiragana" lang="ja" pattern="[ぁ-ゖー]+" placeholder="ひらがなで入力" ${game.status === 'checking' ? 'disabled' : ''} required /><button class="primary-button" type="submit" ${game.status === 'checking' ? 'disabled' : ''}>回答</button></form><span class="hint">ひらがなのみ・Enterでも送信できます</span>`;
     }
     return `<p class="online-status">${escapeHtml(winnerName())}さんが回答を考えています…</p>`;
   }
@@ -420,6 +428,7 @@ function renderAnswerPanel(isWinner, isHost) {
 }
 
 function statusHint() {
+  if (game.status === 'preparing') return `第${game.round}問。まもなく問題文が開きます。`;
   if (game.status === 'revealing') return '問題文が開いています。';
   if (game.status === 'open') return 'わかったら、すぐにボタンを押してください。';
   if (game.status === 'buzzing') return '判定を待っています…';
@@ -437,6 +446,7 @@ function currentPlayerId() {
 
 function statusLabel() {
   if (!game) return '';
+  if (game.status === 'preparing') return 'GET READY';
   if (game.status === 'revealing') return '問題文 OPENING';
   if (game.status === 'open') return 'BUZZ NOW';
   if (game.status === 'buzzing') return 'CONNECTING';
@@ -457,6 +467,7 @@ function buzzDisabled() {
 }
 
 function buzzLabel() {
+  if (game.status === 'preparing') return '問題文を待っています…';
   if (game.status === 'answering' || game.status === 'checking') return game.winner === currentPlayerId() ? '回答入力中…' : `${winnerName()}さんが回答中`;
   if (game.status === 'finished') return 'ラウンド終了';
   if (game.status === 'buzzing') return '判定中…';
@@ -484,11 +495,11 @@ function startSoloRound() {
   game.current = next;
   game.round += 1;
   game.revealed = 0;
-  game.status = 'revealing';
+  game.status = 'preparing';
   game.winner = null;
   game.answerResult = null;
   render();
-  startRevealTimer();
+  startRevealAfterPause();
 }
 
 function nextQuestion() {
@@ -517,9 +528,24 @@ function startRevealTimer() {
   }, 115);
 }
 
+function startRevealAfterPause() {
+  if (!game) return;
+  if (prepareTimer) clearTimeout(prepareTimer);
+  prepareTimer = setTimeout(() => {
+    prepareTimer = null;
+    if (!game || game.status !== 'preparing') return;
+    game.status = 'revealing';
+    updateQuestionUI();
+    if (game.mode === 'online' && session?.role === 'host') broadcastState();
+    startRevealTimer();
+  }, PREPARE_DELAY_MS);
+}
+
 function stopRevealTimer() {
   if (revealTimer) clearInterval(revealTimer);
   revealTimer = null;
+  if (prepareTimer) clearTimeout(prepareTimer);
+  prepareTimer = null;
 }
 
 function updateQuestionUI() {
@@ -527,7 +553,7 @@ function updateQuestionUI() {
   const questionText = document.querySelector('#questionText');
   const questionStatus = document.querySelector('#questionStatus');
   const buzzButton = document.querySelector('#buzzButton');
-  if (questionText) questionText.innerHTML = `${renderQuestionText()}<span class="cursor"></span>`;
+  if (questionText) questionText.innerHTML = `${renderQuestionText()}${game.status === 'preparing' ? '' : '<span class="cursor"></span>'}`;
   if (questionStatus) questionStatus.textContent = statusLabel();
   if (buzzButton) {
     buzzButton.disabled = buzzDisabled();
@@ -568,18 +594,25 @@ function handleHostBuzz(playerId) {
 }
 
 function handleAnswerSubmit(answer) {
-  if (!game || !game.current || game.winner !== currentPlayerId() || !answer.trim()) return;
+  const trimmedAnswer = answer.trim();
+  if (!game || !game.current || game.winner !== currentPlayerId() || !trimmedAnswer) return;
+  if (!isHiragana(trimmedAnswer)) {
+    showToast('解答はひらがなで入力してください。');
+    focusAnswerInput();
+    return;
+  }
   if (game.mode === 'solo' || session?.role === 'host') {
-    evaluateAnswer(currentPlayerId(), answer.trim());
+    evaluateAnswer(currentPlayerId(), trimmedAnswer);
   } else if (session?.connection?.open) {
     game.status = 'checking';
     render();
-    send({ type: 'answer', answer: answer.trim() });
+    send({ type: 'answer', answer: trimmedAnswer });
   }
 }
 
 function evaluateAnswer(playerId, answer) {
-  const correct = [game.current.answer, ...(game.current.acceptedAnswers || [])]
+  const correct = [game.current.answerHiragana, ...(game.current.acceptedAnswersHiragana || [])]
+    .filter(Boolean)
     .some((target) => normalizeAnswer(target) === normalizeAnswer(answer));
   if (correct) {
     game.scores[playerId] = (game.scores[playerId] || 0) + 1;
@@ -739,7 +772,18 @@ function handleNetworkMessage(message) {
     return;
   }
   if (message.type === 'answer' && session.role === 'host' && game?.status === 'answering' && game.winner === 'guest') {
-    evaluateAnswer('guest', String(message.answer || ''));
+    const answer = String(message.answer || '').trim();
+    if (!isHiragana(answer)) {
+      send({ type: 'answer-invalid' });
+      return;
+    }
+    evaluateAnswer('guest', answer);
+    return;
+  }
+  if (message.type === 'answer-invalid' && session.role === 'guest' && game?.status === 'checking') {
+    game.status = 'answering';
+    render();
+    focusAnswerInput();
     return;
   }
   if (message.type === 'game-state' && session.role === 'guest') {
@@ -818,7 +862,8 @@ function openManageModal() {
             <div class="full"><label class="field-label" for="questionCategory">カテゴリ</label><select class="select-input" id="questionCategory">${options}</select></div>
             <div class="full"><label class="field-label" for="questionPrompt">問題文</label><textarea class="text-area" id="questionPrompt" placeholder="例：この遺跡がある都道府県は？" required></textarea></div>
             <div><label class="field-label" for="questionAnswer">答え</label><input class="text-input" id="questionAnswer" placeholder="例：青森県" required /></div>
-            <div><label class="field-label" for="questionSource">出典（任意）</label><input class="text-input" id="questionSource" placeholder="例：公式サイト" /></div>
+            <div><label class="field-label" for="questionAnswerHiragana">答え（ひらがな）</label><input class="text-input" id="questionAnswerHiragana" pattern="[ぁ-ゖー]+" inputmode="hiragana" placeholder="例：あおもりけん" required /></div>
+            <div class="full"><label class="field-label" for="questionSource">出典（任意）</label><input class="text-input" id="questionSource" placeholder="例：公式サイト" /></div>
             <div class="full"><label class="field-label" for="questionExplanation">解説（任意）</label><textarea class="text-area" id="questionExplanation" placeholder="正解後に表示される一言解説"></textarea></div>
           </div>
           <button class="primary-button wide" type="submit" style="margin-top: 16px">この問題を追加</button>
@@ -839,6 +884,7 @@ function addQuestion(form) {
     categoryId: document.querySelector('#questionCategory').value,
     prompt: document.querySelector('#questionPrompt').value.trim(),
     answer: document.querySelector('#questionAnswer').value.trim(),
+    answerHiragana: document.querySelector('#questionAnswerHiragana').value.trim(),
     source: document.querySelector('#questionSource').value.trim(),
     explanation: document.querySelector('#questionExplanation').value.trim(),
     custom: true,
@@ -984,12 +1030,12 @@ function startOnlineRound() {
   game.current = next;
   game.round += 1;
   game.revealed = 0;
-  game.status = 'revealing';
+  game.status = 'preparing';
   game.winner = null;
   game.answerResult = null;
   render();
   broadcastState();
-  startRevealTimer();
+  startRevealAfterPause();
 }
 
 render();
