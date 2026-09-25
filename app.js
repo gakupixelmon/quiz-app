@@ -132,6 +132,8 @@ let expanded = new Set(['world-heritage', 'japan']);
 let game = null;
 let revealTimer = null;
 let prepareTimer = null;
+let skipTimer = null;
+let skipAdvanceTimer = null;
 let toastTimer = null;
 let session = null;
 
@@ -421,7 +423,8 @@ function renderAnswerPanel(isWinner, isHost) {
   }
   if (game.status === 'finished') {
     const correct = game.answerResult?.correct;
-    return `<div class="answer-result ${correct ? 'success' : 'error'}">${correct ? `正解！ ${escapeHtml(winnerName())}さんに1ポイント` : '時間切れです'}<br /><strong>答え：${escapeHtml(game.current.answer || '—')}</strong>${game.current.explanation ? `<br /><span>${escapeHtml(game.current.explanation)}</span>` : ''}</div>`;
+    const resultText = correct ? `正解！ ${escapeHtml(winnerName())}さんに1ポイント` : game.answerResult?.skipped ? '時間切れ。次の問題へスキップします。' : '時間切れです';
+    return `<div class="answer-result ${correct ? 'success' : 'error'}">${resultText}<br /><strong>答え：${escapeHtml(game.current.answer || '—')}</strong>${game.current.explanation ? `<br /><span>${escapeHtml(game.current.explanation)}</span>` : ''}</div>`;
   }
   if (game.answerResult?.wrong) return `<p class="online-status">${escapeHtml(game.answerResult.input || '')} は不正解。続きをどうぞ。</p>`;
   return `<p class="online-status">${statusHint()}${game.mode === 'solo' ? '　スペースキーでも押せます。' : ''}</p>`;
@@ -430,7 +433,7 @@ function renderAnswerPanel(isWinner, isHost) {
 function statusHint() {
   if (game.status === 'preparing') return `第${game.round}問。まもなく問題文が開きます。`;
   if (game.status === 'revealing') return '問題文が開いています。';
-  if (game.status === 'open') return 'わかったら、すぐにボタンを押してください。';
+  if (game.status === 'open') return '全文表示から5秒以内に、すぐボタンを押してください。';
   if (game.status === 'buzzing') return '判定を待っています…';
   return '次の問題を待っています。';
 }
@@ -490,6 +493,7 @@ function startSoloGame() {
 }
 
 function startSoloRound() {
+  stopRevealTimer();
   const next = nextQuestion();
   if (!next) return;
   game.current = next;
@@ -522,6 +526,7 @@ function startRevealTimer() {
       game.status = 'open';
       updateQuestionUI();
       if (game.mode === 'online' && session?.role === 'host') broadcastState();
+      startSkipTimer();
     } else if (game.mode === 'online' && session?.role === 'host') {
       broadcastState();
     }
@@ -541,11 +546,40 @@ function startRevealAfterPause() {
   }, PREPARE_DELAY_MS);
 }
 
+function startSkipTimer() {
+  if (!game || game.status !== 'open') return;
+  if (skipTimer) clearTimeout(skipTimer);
+  skipTimer = setTimeout(() => {
+    skipTimer = null;
+    skipCurrentQuestion();
+  }, 5000);
+}
+
+function skipCurrentQuestion() {
+  if (!game || game.status !== 'open') return;
+  stopRevealTimer();
+  game.status = 'finished';
+  game.winner = null;
+  game.answerResult = { correct: false, skipped: true };
+  if (game.mode === 'online' && session?.role === 'host') broadcastState();
+  render();
+  skipAdvanceTimer = setTimeout(() => {
+    skipAdvanceTimer = null;
+    if (!game || game.status !== 'finished' || !game.answerResult?.skipped) return;
+    if (game.mode === 'solo') startSoloRound();
+    if (game.mode === 'online' && session?.role === 'host') startOnlineRound();
+  }, 1200);
+}
+
 function stopRevealTimer() {
   if (revealTimer) clearInterval(revealTimer);
   revealTimer = null;
   if (prepareTimer) clearTimeout(prepareTimer);
   prepareTimer = null;
+  if (skipTimer) clearTimeout(skipTimer);
+  skipTimer = null;
+  if (skipAdvanceTimer) clearTimeout(skipAdvanceTimer);
+  skipAdvanceTimer = null;
 }
 
 function updateQuestionUI() {
@@ -1025,6 +1059,7 @@ function startOnlineGame() {
 
 function startOnlineRound() {
   if (!game || session?.role !== 'host') return;
+  stopRevealTimer();
   const next = nextQuestion();
   if (!next) return;
   game.current = next;
