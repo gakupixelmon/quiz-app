@@ -120,6 +120,8 @@ const DEFAULT_QUESTIONS = [
 const STORAGE_KEY = 'hayaooshi-custom-questions-v1';
 const NAME_KEY = 'hayaooshi-player-name-v1';
 const PREPARE_DELAY_MS = 1200;
+const SKIP_DELAY_MS = 8000;
+const SKIP_RESULT_DELAY_MS = 3500;
 const app = document.querySelector('#app');
 const modalRoot = document.querySelector('#modalRoot');
 const connectionText = document.querySelector('#connectionText');
@@ -133,6 +135,7 @@ let game = null;
 let revealTimer = null;
 let prepareTimer = null;
 let skipTimer = null;
+let skipCountdownTimer = null;
 let skipAdvanceTimer = null;
 let toastTimer = null;
 let session = null;
@@ -385,6 +388,7 @@ function renderGame() {
           <span class="question-label">QUESTION / ${game.mode === 'online' ? 'LIVE MATCH' : 'PRACTICE'}</span>
           <div class="question-text" id="questionText">${renderQuestionText()}${game.status === 'preparing' ? '' : '<span class="cursor"></span>'}</div>
           <p class="question-source" id="questionSource">出典：${escapeHtml(game.current.source || '登録なし')}</p>
+          <div class="skip-notice ${game.status === 'open' ? '' : 'hidden'}" id="skipNotice">残り <strong id="skipSeconds">${game.skipRemaining ?? 8}</strong> 秒でスキップ</div>
         </div>
         <div class="quiz-actions">
           <button class="buzz-button" id="buzzButton" data-action="buzz" ${buzzDisabled() ? 'disabled' : ''}>${buzzLabel()}</button>
@@ -433,7 +437,7 @@ function renderAnswerPanel(isWinner, isHost) {
 function statusHint() {
   if (game.status === 'preparing') return `第${game.round}問。まもなく問題文が開きます。`;
   if (game.status === 'revealing') return '問題文が開いています。';
-  if (game.status === 'open') return '全文表示から5秒以内に、すぐボタンを押してください。';
+  if (game.status === 'open') return `全文表示からあと${game.skipRemaining ?? 8}秒。すぐボタンを押してください。`;
   if (game.status === 'buzzing') return '判定を待っています…';
   return '次の問題を待っています。';
 }
@@ -451,7 +455,7 @@ function statusLabel() {
   if (!game) return '';
   if (game.status === 'preparing') return 'GET READY';
   if (game.status === 'revealing') return '問題文 OPENING';
-  if (game.status === 'open') return 'BUZZ NOW';
+  if (game.status === 'open') return `BUZZ NOW · ${game.skipRemaining ?? 8}秒`;
   if (game.status === 'buzzing') return 'CONNECTING';
   if (game.status === 'answering' || game.status === 'checking') return `${winnerName()} IS ANSWERING`;
   if (game.status === 'finished') return 'ANSWER REVEALED';
@@ -499,6 +503,7 @@ function startSoloRound() {
   game.current = next;
   game.round += 1;
   game.revealed = 0;
+  game.skipRemaining = 0;
   game.status = 'preparing';
   game.winner = null;
   game.answerResult = null;
@@ -517,13 +522,15 @@ function nextQuestion() {
 }
 
 function startRevealTimer() {
-  stopRevealTimer();
+  stopRevealInterval();
   revealTimer = setInterval(() => {
     if (!game || game.status !== 'revealing') return;
     game.revealed = Math.min(game.current.prompt.length, game.revealed + 1);
     updateQuestionUI();
     if (game.revealed >= game.current.prompt.length) {
+      stopRevealInterval();
       game.status = 'open';
+      game.skipRemaining = 8;
       updateQuestionUI();
       if (game.mode === 'online' && session?.role === 'host') broadcastState();
       startSkipTimer();
@@ -549,37 +556,56 @@ function startRevealAfterPause() {
 function startSkipTimer() {
   if (!game || game.status !== 'open') return;
   if (skipTimer) clearTimeout(skipTimer);
+  if (skipCountdownTimer) clearInterval(skipCountdownTimer);
+  game.skipRemaining = 8;
+  updateQuestionUI();
+  skipCountdownTimer = setInterval(() => {
+    if (!game || game.status !== 'open') return;
+    game.skipRemaining = Math.max(0, (game.skipRemaining || 1) - 1);
+    updateQuestionUI();
+    if (game.mode === 'online' && session?.role === 'host') broadcastState();
+  }, 1000);
   skipTimer = setTimeout(() => {
     skipTimer = null;
+    if (skipCountdownTimer) clearInterval(skipCountdownTimer);
+    skipCountdownTimer = null;
     skipCurrentQuestion();
-  }, 5000);
+  }, SKIP_DELAY_MS);
 }
 
 function skipCurrentQuestion() {
   if (!game || game.status !== 'open') return;
   stopRevealTimer();
+  game.skipRemaining = 0;
   game.status = 'finished';
   game.winner = null;
   game.answerResult = { correct: false, skipped: true };
   if (game.mode === 'online' && session?.role === 'host') broadcastState();
+  showToast('時間切れです。答えを表示して次の問題へ進みます。');
   render();
   skipAdvanceTimer = setTimeout(() => {
     skipAdvanceTimer = null;
     if (!game || game.status !== 'finished' || !game.answerResult?.skipped) return;
     if (game.mode === 'solo') startSoloRound();
     if (game.mode === 'online' && session?.role === 'host') startOnlineRound();
-  }, 1200);
+  }, SKIP_RESULT_DELAY_MS);
 }
 
 function stopRevealTimer() {
-  if (revealTimer) clearInterval(revealTimer);
-  revealTimer = null;
+  stopRevealInterval();
   if (prepareTimer) clearTimeout(prepareTimer);
   prepareTimer = null;
   if (skipTimer) clearTimeout(skipTimer);
   skipTimer = null;
+  if (skipCountdownTimer) clearInterval(skipCountdownTimer);
+  skipCountdownTimer = null;
   if (skipAdvanceTimer) clearTimeout(skipAdvanceTimer);
   skipAdvanceTimer = null;
+}
+
+function stopRevealInterval() {
+  if (revealTimer) clearInterval(revealTimer);
+  revealTimer = null;
 }
 
 function updateQuestionUI() {
@@ -587,8 +613,12 @@ function updateQuestionUI() {
   const questionText = document.querySelector('#questionText');
   const questionStatus = document.querySelector('#questionStatus');
   const buzzButton = document.querySelector('#buzzButton');
+  const skipNotice = document.querySelector('#skipNotice');
+  const skipSeconds = document.querySelector('#skipSeconds');
   if (questionText) questionText.innerHTML = `${renderQuestionText()}${game.status === 'preparing' ? '' : '<span class="cursor"></span>'}`;
   if (questionStatus) questionStatus.textContent = statusLabel();
+  if (skipNotice) skipNotice.classList.toggle('hidden', game.status !== 'open');
+  if (skipSeconds) skipSeconds.textContent = String(game.skipRemaining ?? 8);
   if (buzzButton) {
     buzzButton.disabled = buzzDisabled();
     buzzButton.textContent = buzzLabel();
@@ -771,6 +801,7 @@ function broadcastState() {
     categoryId: game.categoryId,
     round: game.round,
     revealed: game.revealed,
+    skipRemaining: game.skipRemaining || 0,
     status: game.status,
     winner: game.winner,
     scores: game.scores,
@@ -831,7 +862,7 @@ function applyRemoteGameState(message) {
     game = {
       mode: 'online', categoryId: message.categoryId, queue: [], round: message.round,
       queueIndex: 0, scores: message.scores || { host: 0, guest: 0 }, playerNames: message.playerNames || {},
-      current: message.question, revealed: message.revealed || 0, status: message.status,
+      current: message.question, revealed: message.revealed || 0, skipRemaining: message.skipRemaining || 0, status: message.status,
       winner: message.winner, answerResult: message.answerResult,
     };
     view = 'game';
@@ -842,6 +873,7 @@ function applyRemoteGameState(message) {
   game.categoryId = message.categoryId;
   game.round = message.round;
   game.revealed = message.revealed;
+  game.skipRemaining = message.skipRemaining || 0;
   game.status = message.status;
   game.winner = message.winner;
   game.scores = message.scores || game.scores;
@@ -1065,6 +1097,7 @@ function startOnlineRound() {
   game.current = next;
   game.round += 1;
   game.revealed = 0;
+  game.skipRemaining = 0;
   game.status = 'preparing';
   game.winner = null;
   game.answerResult = null;
