@@ -427,8 +427,9 @@ function renderAnswerPanel(isWinner, isHost) {
   }
   if (game.status === 'finished') {
     const correct = game.answerResult?.correct;
-    const resultText = correct ? `正解！ ${escapeHtml(winnerName())}さんに1ポイント` : game.answerResult?.skipped ? '時間切れ。次の問題へスキップします。' : '時間切れです';
-    return `<div class="answer-result ${correct ? 'success' : 'error'}">${resultText}<br /><strong>答え：${escapeHtml(game.current.answer || '—')}</strong>${game.current.explanation ? `<br /><span>${escapeHtml(game.current.explanation)}</span>` : ''}</div>`;
+    const resultText = correct ? `正解！ ${escapeHtml(winnerName())}さんに1ポイント` : game.answerResult?.skipped ? '時間切れ。答えを表示しています。' : '時間切れです';
+    const nextHint = game.answerResult?.skipped ? '<br /><span>3.5秒後に次の問題へ自動移行します。</span>' : '';
+    return `<div class="answer-result ${correct ? 'success' : 'error'}">${resultText}${nextHint}<br /><strong>答え：${escapeHtml(game.current.answer || '—')}</strong>${game.current.explanation ? `<br /><span>${escapeHtml(game.current.explanation)}</span>` : ''}</div>`;
   }
   if (game.answerResult?.wrong) return `<p class="online-status">${escapeHtml(game.answerResult.input || '')} は不正解。続きをどうぞ。</p>`;
   return `<p class="online-status">${statusHint()}${game.mode === 'solo' ? '　スペースキーでも押せます。' : ''}</p>`;
